@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>DELTARUNE PROPHECY</title>
+
+<style>
+@font-face{
+font-family:'Und';
+src:url('assets/und.ttf');
+}
+
+*{
+-webkit-tap-highlight-color:transparent;
+box-sizing:border-box;
+}
+
+html,body{
+margin:0;
+padding:0;
+width:100%;
+height:100%;
+overflow:hidden;
+background:#000;
+font-family:'Und';
+}
+
+body{
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+}
+
+#bg{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:340px;
+height:180px;
+background:url('assets/textures/deltarune.gif') center/cover no-repeat;
+opacity:0.18;
+pointer-events:none;
+z-index:0;
+}
+
+#gate{
+position:fixed;
+inset:0;
+background:#000;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+gap:16px;
+z-index:9999;
+color:#fff;
+text-align:center;
+padding:20px;
+}
+
+#gate button{
+font-family:Arial;
+font-size:14px;
+padding:10px 18px;
+border:none;
+border-radius:6px;
+background:#1a73e8;
+color:#fff;
+cursor:pointer;
+}
+
+.lang{
+position:fixed;
+top:10px;
+left:10px;
+display:flex;
+gap:10px;
+z-index:999;
+}
+
+.lang button{
+font-family:'Und';
+font-size:14px;
+padding:4px 8px;
+background:#000;
+border:1px solid #fff;
+color:#fff;
+cursor:pointer;
+}
+
+.timer,.text{
+background:url('assets/textures/depth-text.png') repeat;
+background-size:256px 256px;
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
+animation:bgMove 7s ease-in-out infinite alternate;
+user-select:none;
+text-align:center;
+z-index:2;
+}
+
+.timer{
+font-size:36px;
+margin-bottom:6px;
+}
+
+.text{
+font-size:22px;
+}
+
+@keyframes bgMove{
+0%{background-position:0 0}
+100%{background-position:120px 120px}
+}
+</style>
+</head>
+
+<body>
+
+<div id="bg"></div>
+
+<div id="gate">
+<div>Чтобы продолжить.. вы должны принять пророчество.</div>
+<button onclick="start()">Go</button>
+</div>
+
+<div class="lang">
+<button onclick="setLang('ru')">RU</button>
+<button onclick="setLang('en')">EN</button>
+</div>
+
+<div class="timer" id="timer">00:00:00:00</div>
+<div class="text" id="online">Loading...</div>
+
+<audio id="a1" src="assets/darksanct.ogg" loop></audio>
+<audio id="a2" src="assets/thesecondsanct.ogg" loop></audio>
+<audio id="a3" src="assets/thethirdsanct.ogg" loop></audio>
+<audio id="a4" src="assets/everhigher.ogg" loop></audio>
+<audio id="a5" src="assets/neverendingnight.ogg" loop></audio>
+<audio id="a6" src="assets/12am.ogg" loop></audio>
+<audio id="a7" src="assets/13am.ogg" loop></audio>
+
+<script>
+const WORKER="https://deltarune.sigmochka232.workers.dev";
+
+const timer=document.getElementById("timer");
+const online=document.getElementById("online");
+
+const tracks=[a1,a2,a3,a4,a5,a6,a7];
+
+let lang=navigator.language.startsWith("ru")?"ru":"en";
+let userId=localStorage.getItem("uid");
+
+function stopAll(){
+tracks.forEach(t=>{t.pause();t.currentTime=0;});
+}
+
+function play(i){
+stopAll();
+tracks[i].play().catch(()=>{});
+}
+
+function music(){
+let h=new Date().getHours();
+
+if(h>=6&&h<10)play(0);
+else if(h>=10&&h<16)play(1);
+else if(h>=16&&h<20)play(2);
+else if(h>=20&&h<23)play(3);
+else if(h>=23||h<0)play(4);
+else if(h>=0&&h<1)play(5);
+else if(h>=1&&h<6)play(6);
+}
+
+function updateTimer(){
+let d=new Date();
+let diff=new Date("2026-04-01T00:00:00")-d;
+
+if(diff<=0)return timer.innerText="00:00:00:00";
+
+let D=Math.floor(diff/86400000);
+let H=Math.floor(diff/3600000)%24;
+let M=Math.floor(diff/60000)%60;
+let S=Math.floor(diff/1000)%60;
+
+timer.innerText=`${D}:${H}:${M}:${S}`.replace(/\b\d\b/g,x=>x.padStart(2,"0"));
+}
+
+function setLang(l){
+lang=l;
+online.innerText=l==="ru"?"Онлайн сайта: ...":"Site online: ...";
+}
+
+async function ping(){
+try{
+let r=await fetch(WORKER+"/ping?id="+(userId||""));
+let j=await r.json();
+
+userId=j.id;
+localStorage.setItem("uid",userId);
+
+online.innerText=(lang==="ru"?"Онлайн сайта: ":"Site online: ")+j.online;
+
+}catch(e){}
+}
+
+function leave(){
+if(!userId) return;
+navigator.sendBeacon(WORKER+"/leave?id="+userId);
+}
+
+function start(){
+gate.style.display="none";
+music();
+setInterval(music,60000);
+setInterval(ping,5000);
+ping();
+}
+
+window.addEventListener("beforeunload",leave);
+window.addEventListener("pagehide",leave);
+
+setLang(lang);
+updateTimer();
+setInterval(updateTimer,1000);
+</script>
+
+</body>
+</html>
