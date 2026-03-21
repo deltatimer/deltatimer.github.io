@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="icon" type="image/png" href="assets/icon.png">
 <title>DELTARUNE PROPHECY</title>
 
 <style>
@@ -91,7 +92,7 @@ color:#fff;
 cursor:pointer;
 }
 
-.timer,.text{
+.timer,.text,.label{
 background:url('assets/textures/depth-text.png') repeat;
 background-size:256px 256px;
 -webkit-background-clip:text;
@@ -101,6 +102,11 @@ animation:bgMove 7s ease-in-out infinite alternate;
 user-select:none;
 text-align:center;
 z-index:2;
+}
+
+.label{
+font-size:18px;
+margin-bottom:-5px;
 }
 
 .timer{
@@ -124,7 +130,7 @@ font-size:22px;
 <div id="bg"></div>
 
 <div id="gate">
-<div>Чтобы продолжить.. вы должны принять пророчество.</div>
+<div id="gateText">Чтобы продолжить.. вы должны принять пророчество.</div>
 <button onclick="start()">Go</button>
 </div>
 
@@ -133,6 +139,7 @@ font-size:22px;
 <button onclick="setLang('en')">EN</button>
 </div>
 
+<div class="label" id="timerLabel">До оф. релиза:</div>
 <div class="timer" id="timer">00:00:00:00</div>
 <div class="text" id="online">Loading...</div>
 
@@ -149,6 +156,8 @@ const WORKER="https://deltarune.sigmochka232.workers.dev";
 
 const timer=document.getElementById("timer");
 const online=document.getElementById("online");
+const timerLabel=document.getElementById("timerLabel");
+const gateText=document.getElementById("gateText");
 
 const tracks=[a1,a2,a3,a4,a5,a6,a7];
 
@@ -192,7 +201,9 @@ timer.innerText=`${D}:${H}:${M}:${S}`.replace(/\b\d\b/g,x=>x.padStart(2,"0"));
 
 function setLang(l){
 lang=l;
-online.innerText=l==="ru"?"Онлайн сайта: ...":"Site online: ...";
+timerLabel.innerText = l === "ru" ? "До оф. релиза:" : "Until official release:";
+online.innerText = l === "ru" ? "Онлайн сайта: ..." : "Site online: ...";
+gateText.innerText = l === "ru" ? "Чтобы продолжить.. вы должны принять пророчество." : "To proceed.. you must accept the prophecy.";
 }
 
 async function ping(){
