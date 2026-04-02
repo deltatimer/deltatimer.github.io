@@ -187,7 +187,7 @@ else if(h>=1&&h<6)play(6);
 
 function updateTimer(){
 let d=new Date();
-let diff=new Date("2026-04-01T00:00:00")-d;
+let diff=new Date("2026-04-7T00:00:00")-d;
 
 if(diff<=0)return timer.innerText="00:00:00:00";
 
@@ -201,7 +201,7 @@ timer.innerText=`${D}:${H}:${M}:${S}`.replace(/\b\d\b/g,x=>x.padStart(2,"0"));
 
 function setLang(l){
 lang=l;
-timerLabel.innerText = l === "ru" ? "До оф. релиза:" : "Until official release:";
+timerLabel.innerText = l === "ru" ? "До оф. релиза: (примерно)" : "Until official release:";
 online.innerText = l === "ru" ? "Онлайн сайта: ..." : "Site online: ...";
 gateText.innerText = l === "ru" ? "Чтобы продолжить.. вы должны принять пророчество." : "To proceed.. you must accept the prophecy.";
 }
