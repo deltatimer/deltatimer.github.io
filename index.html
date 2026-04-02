@@ -187,7 +187,8 @@ else if(h>=1&&h<6)play(6);
 //ddd
 function updateTimer(){
 let d=new Date();
-let diff=new Date("2026-04-0700:00:00")-d;
+let target=new Date(2026, 3, 7, 0, 0, 0);
+let diff=target-d;
 
 if(diff<=0)return timer.innerText="00:00:00:00";
 
@@ -196,7 +197,7 @@ let H=Math.floor(diff/3600000)%24;
 let M=Math.floor(diff/60000)%60;
 let S=Math.floor(diff/1000)%60;
 
-timer.innerText=`${D}:${H}:${M}:${S}`.replace(/\b\d\b/g,x=>x.padStart(2,"0"));
+timer.innerText=`${D.toString().padStart(2,"0")}:${H.toString().padStart(2,"0")}:${M.toString().padStart(2,"0")}:${S.toString().padStart(2,"0")}`;
 }
 
 function setLang(l){
