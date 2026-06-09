@@ -36,9 +36,10 @@ position: relative;
 min-height: 100vh;
 }
 
+/* Основной контент — без z-index, чтобы цветы были поверх при необходимости,
+   но цветы полупрозрачные, так что текст будет виден сквозь них */
 .content-wrapper {
   position: relative;
-  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -49,6 +50,7 @@ min-height: 100vh;
   pointer-events: auto;
 }
 
+/* Логотип — без z-index, естественный поток */
 .logo-video {
   display: block;
   margin: 0 auto 20px auto;
@@ -59,7 +61,8 @@ min-height: 100vh;
   pointer-events: none;
   object-fit: contain;
 }
-  
+
+/* ЦВЕТЫ — исправлено: убраны артефакты, правая сторона без пустой линии */
 .flowers-left {
   position: fixed;
   top: 0;
@@ -67,10 +70,10 @@ min-height: 100vh;
   width: auto;
   height: 100%;
   pointer-events: none;
-  z-index: 5;
+  z-index: 10;
   opacity: 0.55;
   object-fit: cover;
-  transform: translateX(0);
+  object-position: left center;
 }
 
 .flowers-right {
@@ -80,14 +83,24 @@ min-height: 100vh;
   width: auto;
   height: 100%;
   pointer-events: none;
-  z-index: 5;
+  z-index: 10;
   opacity: 0.55;
-  transform: scaleX(-1) translateX(0);
   object-fit: cover;
+  object-position: right center;
+  /* Убираем scaleX(-1) — он создавал артефакты и пустую линию,
+     вместо этого просто показываем зеркальное отражение через transform 
+     но без сдвигов и пустот */
+  transform: scaleX(-1);
+}
+
+/* Альтернативный вариант, если transform scale даёт артефакты - используем чистый флип без смещений */
+.flowers-right {
+  transform: scaleX(-1);
+  transform-origin: center;
 }
   
 .timer,.text,.label{
-background:url('assets/textures/depth-text.png') repeat;
+background: url('assets/textures/depth-text.png') repeat;
 background-size: 256px 256px;
 -webkit-background-clip: text;
 background-clip: text;
@@ -96,7 +109,6 @@ animation: bgMove 7s ease-in-out infinite alternate;
 user-select: none;
 text-align: center;
 position: relative;
-z-index: 20;
 }
 
 .label{
@@ -118,8 +130,8 @@ letter-spacing: 1px;
 }
 
 @keyframes bgMove{
-0%{background-position:0 0}
-100%{background-position:120px 120px}
+0%{background-position: 0 0}
+100%{background-position: 120px 120px}
 }
 
 #gate{
@@ -154,22 +166,22 @@ transition: opacity 0.2s, transform 0.1s;
 }
 
 .lang{
-position:fixed;
-top:12px;
-left:12px;
-display:flex;
-gap:12px;
-z-index:999;
+position: fixed;
+top: 12px;
+left: 12px;
+display: flex;
+gap: 12px;
+z-index: 999;
 }
 
 .lang button{
-font-family:'Und';
+font-family: 'Und';
 font-size: 16px;
 padding: 6px 14px;
-background:#000;
-border:1px solid #fff;
-color:#fff;
-cursor:pointer;
+background: #000;
+border: 1px solid #fff;
+color: #fff;
+cursor: pointer;
 transition: all 0.2s;
 border-radius: 4px;
 }
@@ -178,7 +190,7 @@ border-radius: 4px;
   background: #333;
 }
 
-/* ===== ОСНОВНЫЕ ПРАВКИ: ПЛОТНЫЕ И КРУПНЫЕ ШРИФТЫ НА МОБИЛКЕ ===== */
+/* ===== ТЕЛЕФОНЫ: ЦВЕТЫ МЕНЬШЕ, НЕТ ПУСТЫХ ЛИНИЙ ===== */
 @media (max-width: 760px) {
   .logo-video {
     max-width: 320px;
@@ -201,22 +213,22 @@ border-radius: 4px;
     font-size: 22px; 
   }
   
+  /* ЦВЕТЫ — меньше, без пустот и артефактов */
   .flowers-left {
-    width: 38%;
+    width: 35%;
     height: 100%;
     opacity: 0.4;
     object-fit: cover;
-    left: 0;
-    transform: translateX(-8%);
+    object-position: left center;
   }
   
   .flowers-right {
-    width: 38%;
+    width: 35%;
     height: 100%;
     opacity: 0.4;
     object-fit: cover;
-    right: 0;
-    transform: scaleX(-1) translateX(8%);
+    object-position: right center;
+    transform: scaleX(-1);
   }
   
   .content-wrapper {
@@ -248,8 +260,8 @@ border-radius: 4px;
 
 @media (max-width: 480px) {
   .logo-video {
-    max-width: 280px;
-    max-height: 130px;
+    max-width: 260px;
+    max-height: 120px;
     margin-bottom: 16px;
   }
   
@@ -265,21 +277,20 @@ border-radius: 4px;
     font-size: 20px; 
   }
   
-  .lang button { 
-    font-size: 14px;
-    padding: 5px 10px;
-  }
-  
+  /* ЕЩЁ МЕНЬШЕ ЦВЕТЫ НА МАЛЕНЬКИХ ТЕЛЕФОНАХ */
   .flowers-left {
-    width: 44%;
+    width: 28%;
     opacity: 0.35;
-    transform: translateX(-12%);
   }
   
   .flowers-right {
-    width: 44%;
+    width: 28%;
     opacity: 0.35;
-    transform: scaleX(-1) translateX(12%);
+  }
+  
+  .lang button { 
+    font-size: 14px;
+    padding: 5px 10px;
   }
   
   .content-wrapper {
@@ -298,7 +309,7 @@ border-radius: 4px;
 
 @media (max-width: 400px) {
   .label { 
-    font-size: 16px; 
+    font-size: 17px; 
   }
   
   .timer { 
@@ -310,15 +321,13 @@ border-radius: 4px;
   }
   
   .flowers-left {
-    width: 48%;
+    width: 24%;
     opacity: 0.3;
-    transform: translateX(-16%);
   }
   
   .flowers-right {
-    width: 48%;
+    width: 24%;
     opacity: 0.3;
-    transform: scaleX(-1) translateX(16%);
   }
   
   .lang button {
@@ -327,7 +336,6 @@ border-radius: 4px;
   }
 }
 
-/* Для очень маленьких экранов (типа iPhone SE) - шрифты всё равно остаются читаемыми */
 @media (max-width: 360px) {
   .label { 
     font-size: 15px; 
@@ -342,8 +350,18 @@ border-radius: 4px;
   }
   
   .logo-video {
-    max-width: 240px;
-    max-height: 110px;
+    max-width: 220px;
+    max-height: 100px;
+  }
+  
+  .flowers-left {
+    width: 20%;
+    opacity: 0.25;
+  }
+  
+  .flowers-right {
+    width: 20%;
+    opacity: 0.25;
   }
   
   #gate button {
@@ -351,9 +369,59 @@ border-radius: 4px;
     padding: 8px 20px;
   }
 }
+
+/* Альбомная ориентация на телефонах */
+@media (max-width: 800px) and (orientation: landscape) {
+  .flowers-left,
+  .flowers-right {
+    width: 20%;
+    opacity: 0.3;
+  }
+  
+  .logo-video {
+    max-width: 240px;
+    max-height: 100px;
+    margin-bottom: 10px;
+  }
+  
+  .timer {
+    font-size: 32px;
+  }
+  
+  .text {
+    font-size: 18px;
+  }
+  
+  .label {
+    font-size: 16px;
+  }
+  
+  .content-wrapper {
+    padding: 0 20px;
+  }
+}
+
+/* Дополнительный фикс для очень широких экранов — чтобы цветы не создавали пустую полосу справа */
+@media (min-width: 1920px) {
+  .flowers-left,
+  .flowers-right {
+    width: auto;
+    max-width: 35%;
+  }
+}
+
+/* Чтобы изображения цветов не обрезались резко — плавный край */
+.flowers-left, .flowers-right {
+  -webkit-mask-image: linear-gradient(to right, black, black 85%, transparent);
+  mask-image: linear-gradient(to right, black, black 85%, transparent);
+}
+
+.flowers-right {
+  -webkit-mask-image: linear-gradient(to left, black, black 85%, transparent);
+  mask-image: linear-gradient(to left, black, black 85%, transparent);
+}
 </style>
 </head>
-
 <body>
 
 <img class="flowers-left" src="assets/textures/ch5-flowers.png" alt="flowers">
