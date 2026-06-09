@@ -36,7 +36,6 @@ position:relative;
 min-height:100vh;
 }
 
-/* Основной контентный слой — выше цветов */
 .content-wrapper {
   position: relative;
   z-index: 20;
@@ -60,8 +59,7 @@ min-height:100vh;
   pointer-events: none;
   object-fit: contain;
 }
-
-/* Цветы слева и справа — теперь не мешают контенту, имеют прозрачные поля и корректное позиционирование */
+  
 .flowers-left {
   position: fixed;
   top: 0;
@@ -87,8 +85,7 @@ min-height:100vh;
   transform: scaleX(-1) translateX(0);
   object-fit: cover;
 }
-
-/* Таймер и текст — поднимаем выше, плюс безопасные отступы */
+  
 .timer,.text,.label{
 background:url('assets/textures/depth-text.png') repeat;
 background-size:256px 256px;
@@ -166,7 +163,6 @@ color:#fff;
 cursor:pointer;
 }
 
-/* ========= АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ========= */
 @media (max-width: 760px) {
   .logo-video {
     max-width: 280px;
@@ -185,7 +181,6 @@ cursor:pointer;
     font-size: 16px; 
   }
   
-  /* Цветы слева: уменьшаем ширину и делаем их более прозрачными, чтобы не перекрывать текст */
   .flowers-left {
     width: 38%;
     height: 100%;
@@ -204,13 +199,11 @@ cursor:pointer;
     transform: scaleX(-1) translateX(8%);
   }
   
-  /* Даём контенту больше воздуха по бокам */
   .content-wrapper {
     padding: 0 20px;
     max-width: 90%;
   }
   
-  /* Текст онлайн и таймер не должны прижиматься к краям */
   .timer, .text, .label {
     max-width: 90vw;
     word-break: break-word;
@@ -257,7 +250,6 @@ cursor:pointer;
   }
 }
 
-/* Для очень узких экранов (например, 375px) цветы почти не мешают тексту */
 @media (max-width: 400px) {
   .flowers-left {
     width: 48%;
@@ -276,11 +268,9 @@ cursor:pointer;
 
 <body>
 
-<!-- Боковые цветы (теперь не перекрывают текст на телефонах) -->
 <img class="flowers-left" src="assets/textures/ch5-flowers.png" alt="flowers">
 <img class="flowers-right" src="assets/textures/ch5-flowers.png" alt="flowers">
 
-<!-- Обёртка для контента, который должен быть поверх и не мешать цветам -->
 <div class="content-wrapper">
   <video class="logo-video" autoplay loop muted playsinline disablePictureInPicture>
     <source src="assets/logo-ch5.mp4" type="video/mp4">
