@@ -18,22 +18,22 @@ box-sizing:border-box;
 }
 
 html,body{
-margin:0;
-padding:0;
-width:100%;
-height:100%;
-overflow:hidden;
-background:#000;
-font-family:'Und';
+margin: 0;
+padding: 0;
+width: 100%;
+height: 100%;
+overflow: hidden;
+background: #000;
+font-family: 'Und';
 }
 
 body{
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-position:relative;
-min-height:100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+position: relative;
+min-height: 100vh;
 }
 
 .content-wrapper {
@@ -88,29 +88,33 @@ min-height:100vh;
   
 .timer,.text,.label{
 background:url('assets/textures/depth-text.png') repeat;
-background-size:256px 256px;
--webkit-background-clip:text;
-background-clip:text;
-color:transparent;
-animation:bgMove 7s ease-in-out infinite alternate;
-user-select:none;
-text-align:center;
+background-size: 256px 256px;
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+animation: bgMove 7s ease-in-out infinite alternate;
+user-select: none;
+text-align: center;
 position: relative;
 z-index: 20;
 }
 
 .label{
-font-size:18px;
-margin-bottom:-5px;
+font-size: 22px;
+margin-bottom: -5px;
+letter-spacing: 1px;
 }
 
 .timer{
-font-size:36px;
-margin-bottom:6px;
+font-size: 48px;
+margin-bottom: 8px;
+letter-spacing: 2px;
+font-weight: bold;
 }
 
 .text{
-font-size:22px;
+font-size: 26px;
+letter-spacing: 1px;
 }
 
 @keyframes bgMove{
@@ -119,66 +123,82 @@ font-size:22px;
 }
 
 #gate{
-position:fixed;
-inset:0;
-background:#000;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-gap:16px;
-z-index:9999;
-color:#fff;
-text-align:center;
-padding:20px;
+position: fixed;
+inset: 0;
+background: #000;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+gap: 24px;
+z-index: 9999;
+color: #fff;
+text-align: center;
+padding: 20px;
 }
 
 #gate button{
-font-family:Arial;
-font-size:14px;
-padding:10px 18px;
-border:none;
-border-radius:6px;
-background:#1a73e8;
-color:#fff;
-cursor:pointer;
+font-family: 'Und', Arial, sans-serif;
+font-size: 20px;
+padding: 12px 28px;
+border: none;
+border-radius: 8px;
+background: #1a73e8;
+color: #fff;
+cursor: pointer;
+transition: opacity 0.2s, transform 0.1s;
+}
+
+#gate button:active {
+  transform: scale(0.96);
 }
 
 .lang{
 position:fixed;
-top:10px;
-left:10px;
+top:12px;
+left:12px;
 display:flex;
-gap:10px;
+gap:12px;
 z-index:999;
 }
 
 .lang button{
 font-family:'Und';
-font-size:14px;
-padding:4px 8px;
+font-size: 16px;
+padding: 6px 14px;
 background:#000;
 border:1px solid #fff;
 color:#fff;
 cursor:pointer;
+transition: all 0.2s;
+border-radius: 4px;
 }
 
+.lang button:active {
+  background: #333;
+}
+
+/* ===== ОСНОВНЫЕ ПРАВКИ: ПЛОТНЫЕ И КРУПНЫЕ ШРИФТЫ НА МОБИЛКЕ ===== */
 @media (max-width: 760px) {
   .logo-video {
-    max-width: 280px;
-    max-height: 130px;
-    margin-top: 10px;
-    margin-bottom: 16px;
+    max-width: 320px;
+    max-height: 150px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .label { 
+    font-size: 20px; 
+    margin-bottom: -3px;
   }
   
   .timer { 
-    font-size: 28px; 
+    font-size: 42px; 
+    margin-bottom: 8px;
   }
+  
   .text { 
-    font-size: 18px; 
-  }
-  .label { 
-    font-size: 16px; 
+    font-size: 22px; 
   }
   
   .flowers-left {
@@ -208,31 +228,48 @@ cursor:pointer;
     max-width: 90vw;
     word-break: break-word;
   }
+  
+  .lang button {
+    font-size: 15px;
+    padding: 5px 12px;
+  }
+  
+  #gate button {
+    font-size: 18px;
+    padding: 10px 24px;
+  }
+  
+  #gateText {
+    font-size: 20px;
+    max-width: 80%;
+    line-height: 1.4;
+  }
 }
 
 @media (max-width: 480px) {
   .logo-video {
-    max-width: 260px;
-    max-height: 120px;
-    margin-bottom: 12px;
+    max-width: 280px;
+    max-height: 130px;
+    margin-bottom: 16px;
+  }
+  
+  .label { 
+    font-size: 18px; 
   }
   
   .timer { 
-    font-size: 24px; 
+    font-size: 36px; 
   }
+  
   .text { 
-    font-size: 16px; 
-  }
-  .label { 
-    font-size: 14px; 
+    font-size: 20px; 
   }
   
   .lang button { 
-    font-size: 12px;
-    padding: 4px 8px;
+    font-size: 14px;
+    padding: 5px 10px;
   }
   
-  /* делаем цветы ещё уже и отодвигаем от центра */
   .flowers-left {
     width: 44%;
     opacity: 0.35;
@@ -248,9 +285,30 @@ cursor:pointer;
   .content-wrapper {
     padding: 0 12px;
   }
+  
+  #gate button {
+    font-size: 17px;
+    padding: 9px 22px;
+  }
+  
+  #gateText {
+    font-size: 18px;
+  }
 }
 
 @media (max-width: 400px) {
+  .label { 
+    font-size: 16px; 
+  }
+  
+  .timer { 
+    font-size: 32px; 
+  }
+  
+  .text { 
+    font-size: 18px; 
+  }
+  
   .flowers-left {
     width: 48%;
     opacity: 0.3;
@@ -261,6 +319,36 @@ cursor:pointer;
     width: 48%;
     opacity: 0.3;
     transform: scaleX(-1) translateX(16%);
+  }
+  
+  .lang button {
+    font-size: 13px;
+    padding: 4px 9px;
+  }
+}
+
+/* Для очень маленьких экранов (типа iPhone SE) - шрифты всё равно остаются читаемыми */
+@media (max-width: 360px) {
+  .label { 
+    font-size: 15px; 
+  }
+  
+  .timer { 
+    font-size: 28px; 
+  }
+  
+  .text { 
+    font-size: 16px; 
+  }
+  
+  .logo-video {
+    max-width: 240px;
+    max-height: 110px;
+  }
+  
+  #gate button {
+    font-size: 16px;
+    padding: 8px 20px;
   }
 }
 </style>
