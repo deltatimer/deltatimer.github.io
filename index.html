@@ -32,19 +32,79 @@ display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
+position:relative;
+min-height:100vh;
 }
 
-#bg{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:340px;
-height:180px;
-background:url('assets/textures/deltarune.gif') center/cover no-repeat;
-opacity:0.18;
+.logo-video {
+position:fixed;
+top: 150px;
+left: 50%;
+transform: translateX(-50%);
+width: auto;
+height: auto;
+max-width: 450px;
+max-height: 210px;
+pointer-events: none;
+z-index: 5;
+object-fit: contain;
+}
+
+.flowers-left {
+position:fixed;
+top:0;
+left:0;
+width:auto;
+height:100%;
 pointer-events:none;
-z-index:0;
+z-index:10;
+opacity:0.55;
+object-fit: cover;
+}
+
+.flowers-right {
+position:fixed;
+top:0;
+right:0;
+width:auto;
+height:100%;
+pointer-events:none;
+z-index:10;
+opacity:0.55;
+transform: scaleX(-1);
+object-fit: cover;
+}
+
+.timer,.text,.label{
+background:url('assets/textures/depth-text.png') repeat;
+background-size:256px 256px;
+-webkit-background-clip:text;
+background-clip:text;
+color:transparent;
+animation:bgMove 7s ease-in-out infinite alternate;
+user-select:none;
+text-align:center;
+z-index:5;
+position:relative;
+}
+
+.label{
+font-size:18px;
+margin-bottom:-5px;
+}
+
+.timer{
+font-size:36px;
+margin-bottom:6px;
+}
+
+.text{
+font-size:22px;
+}
+
+@keyframes bgMove{
+0%{background-position:0 0}
+100%{background-position:120px 120px}
 }
 
 #gate{
@@ -92,42 +152,28 @@ color:#fff;
 cursor:pointer;
 }
 
-.timer,.text,.label{
-background:url('assets/textures/depth-text.png') repeat;
-background-size:256px 256px;
--webkit-background-clip:text;
-background-clip:text;
-color:transparent;
-animation:bgMove 7s ease-in-out infinite alternate;
-user-select:none;
-text-align:center;
-z-index:2;
+@media (max-width: 480px) {
+.logo-video {
+max-width: 320px;
+max-height: 150px;
+top: 100px;
 }
-
-.label{
-font-size:18px;
-margin-bottom:-5px;
-}
-
-.timer{
-font-size:36px;
-margin-bottom:6px;
-}
-
-.text{
-font-size:22px;
-}
-
-@keyframes bgMove{
-0%{background-position:0 0}
-100%{background-position:120px 120px}
+.timer { font-size: 28px; }
+.text { font-size: 18px; }
+.label { font-size: 16px; }
+.lang button { font-size: 12px; }
 }
 </style>
 </head>
 
 <body>
 
-<div id="bg"></div>
+<img class="flowers-left" src="assets/textures/ch5-flowers.png" alt="flowers">
+<img class="flowers-right" src="assets/textures/ch5-flowers.png" alt="flowers">
+
+<video class="logo-video" autoplay loop muted playsinline disablePictureInPicture>
+  <source src="assets/logo-ch5.mp4" type="video/mp4">
+</video>
 
 <div id="gate">
 <div id="gateText">Чтобы продолжить.. вы должны принять пророчество.</div>
@@ -184,13 +230,16 @@ else if(h>=23||h<0)play(4);
 else if(h>=0&&h<1)play(5);
 else if(h>=1&&h<6)play(6);
 }
-//ddd
+
 function updateTimer(){
 let d=new Date();
-let target=new Date(2026, 3, 7, 0, 0, 0);
+let target=new Date(2026, 5, 24, 0, 0, 0);
 let diff=target-d;
 
-if(diff<=0)return timer.innerText="00:00:00:00";
+if(diff<=0){
+timer.innerText="00:00:00:00";
+return;
+}
 
 let D=Math.floor(diff/86400000);
 let H=Math.floor(diff/3600000)%24;
@@ -202,7 +251,7 @@ timer.innerText=`${D.toString().padStart(2,"0")}:${H.toString().padStart(2,"0")}
 
 function setLang(l){
 lang=l;
-timerLabel.innerText = l === "ru" ? "До оф. релиза: (примерно)" : "Until official release:";
+timerLabel.innerText = l === "ru" ? "До оф. релиза:" : "Until official release:";
 online.innerText = l === "ru" ? "Онлайн сайта: ..." : "Site online: ...";
 gateText.innerText = l === "ru" ? "Чтобы продолжить.. вы должны принять пророчество." : "To proceed.. you must accept the prophecy.";
 }
