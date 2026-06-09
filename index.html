@@ -36,45 +36,59 @@ position:relative;
 min-height:100vh;
 }
 
-.logo-video {
-position:fixed;
-top: 150px;
-left: 50%;
-transform: translateX(-50%);
-width: auto;
-height: auto;
-max-width: 450px;
-max-height: 210px;
-pointer-events: none;
-z-index: 5;
-object-fit: contain;
+/* Основной контентный слой — выше цветов */
+.content-wrapper {
+  position: relative;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  pointer-events: auto;
 }
 
+.logo-video {
+  display: block;
+  margin: 0 auto 20px auto;
+  width: auto;
+  height: auto;
+  max-width: 450px;
+  max-height: 210px;
+  pointer-events: none;
+  object-fit: contain;
+}
+
+/* Цветы слева и справа — теперь не мешают контенту, имеют прозрачные поля и корректное позиционирование */
 .flowers-left {
-position:fixed;
-top:0;
-left:0;
-width:auto;
-height:100%;
-pointer-events:none;
-z-index:10;
-opacity:0.55;
-object-fit: cover;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: auto;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.55;
+  object-fit: cover;
+  transform: translateX(0);
 }
 
 .flowers-right {
-position:fixed;
-top:0;
-right:0;
-width:auto;
-height:100%;
-pointer-events:none;
-z-index:10;
-opacity:0.55;
-transform: scaleX(-1);
-object-fit: cover;
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: auto;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+  opacity: 0.55;
+  transform: scaleX(-1) translateX(0);
+  object-fit: cover;
 }
 
+/* Таймер и текст — поднимаем выше, плюс безопасные отступы */
 .timer,.text,.label{
 background:url('assets/textures/depth-text.png') repeat;
 background-size:256px 256px;
@@ -84,8 +98,8 @@ color:transparent;
 animation:bgMove 7s ease-in-out infinite alternate;
 user-select:none;
 text-align:center;
-z-index:5;
-position:relative;
+position: relative;
+z-index: 20;
 }
 
 .label{
@@ -152,42 +166,140 @@ color:#fff;
 cursor:pointer;
 }
 
-@media (max-width: 480px) {
-.logo-video {
-max-width: 320px;
-max-height: 150px;
-top: 100px;
+/* ========= АДАПТАЦИЯ ДЛЯ ТЕЛЕФОНОВ ========= */
+@media (max-width: 760px) {
+  .logo-video {
+    max-width: 280px;
+    max-height: 130px;
+    margin-top: 10px;
+    margin-bottom: 16px;
+  }
+  
+  .timer { 
+    font-size: 28px; 
+  }
+  .text { 
+    font-size: 18px; 
+  }
+  .label { 
+    font-size: 16px; 
+  }
+  
+  /* Цветы слева: уменьшаем ширину и делаем их более прозрачными, чтобы не перекрывать текст */
+  .flowers-left {
+    width: 38%;
+    height: 100%;
+    opacity: 0.4;
+    object-fit: cover;
+    left: 0;
+    transform: translateX(-8%);
+  }
+  
+  .flowers-right {
+    width: 38%;
+    height: 100%;
+    opacity: 0.4;
+    object-fit: cover;
+    right: 0;
+    transform: scaleX(-1) translateX(8%);
+  }
+  
+  /* Даём контенту больше воздуха по бокам */
+  .content-wrapper {
+    padding: 0 20px;
+    max-width: 90%;
+  }
+  
+  /* Текст онлайн и таймер не должны прижиматься к краям */
+  .timer, .text, .label {
+    max-width: 90vw;
+    word-break: break-word;
+  }
 }
-.timer { font-size: 28px; }
-.text { font-size: 18px; }
-.label { font-size: 16px; }
-.lang button { font-size: 12px; }
+
+@media (max-width: 480px) {
+  .logo-video {
+    max-width: 260px;
+    max-height: 120px;
+    margin-bottom: 12px;
+  }
+  
+  .timer { 
+    font-size: 24px; 
+  }
+  .text { 
+    font-size: 16px; 
+  }
+  .label { 
+    font-size: 14px; 
+  }
+  
+  .lang button { 
+    font-size: 12px;
+    padding: 4px 8px;
+  }
+  
+  /* делаем цветы ещё уже и отодвигаем от центра */
+  .flowers-left {
+    width: 44%;
+    opacity: 0.35;
+    transform: translateX(-12%);
+  }
+  
+  .flowers-right {
+    width: 44%;
+    opacity: 0.35;
+    transform: scaleX(-1) translateX(12%);
+  }
+  
+  .content-wrapper {
+    padding: 0 12px;
+  }
+}
+
+/* Для очень узких экранов (например, 375px) цветы почти не мешают тексту */
+@media (max-width: 400px) {
+  .flowers-left {
+    width: 48%;
+    opacity: 0.3;
+    transform: translateX(-16%);
+  }
+  
+  .flowers-right {
+    width: 48%;
+    opacity: 0.3;
+    transform: scaleX(-1) translateX(16%);
+  }
 }
 </style>
 </head>
 
 <body>
 
+<!-- Боковые цветы (теперь не перекрывают текст на телефонах) -->
 <img class="flowers-left" src="assets/textures/ch5-flowers.png" alt="flowers">
 <img class="flowers-right" src="assets/textures/ch5-flowers.png" alt="flowers">
 
-<video class="logo-video" autoplay loop muted playsinline disablePictureInPicture>
-  <source src="assets/logo-ch5.mp4" type="video/mp4">
-</video>
+<!-- Обёртка для контента, который должен быть поверх и не мешать цветам -->
+<div class="content-wrapper">
+  <video class="logo-video" autoplay loop muted playsinline disablePictureInPicture>
+    <source src="assets/logo-ch5.mp4" type="video/mp4">
+  </video>
+
+  <div class="label" id="timerLabel">До оф. релиза:</div>
+  <div class="timer" id="timer">00:00:00:00</div>
+  <div class="text" id="online">Loading...</div>
+</div>
 
 <div id="gate">
-<div id="gateText">Чтобы продолжить.. вы должны принять пророчество.</div>
-<button onclick="start()">Go</button>
+  <div id="gateText">Чтобы продолжить.. вы должны принять пророчество.</div>
+  <button onclick="start()">Go</button>
 </div>
 
 <div class="lang">
-<button onclick="setLang('ru')">RU</button>
-<button onclick="setLang('en')">EN</button>
+  <button onclick="setLang('ru')">RU</button>
+  <button onclick="setLang('en')">EN</button>
 </div>
-
-<div class="label" id="timerLabel">До оф. релиза:</div>
-<div class="timer" id="timer">00:00:00:00</div>
-<div class="text" id="online">Loading...</div>
 
 <audio id="a1" src="assets/darksanct.mp3" loop></audio>
 <audio id="a2" src="assets/thesecondsanct.mp3" loop></audio>
